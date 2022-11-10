@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app">
+        <span v-html="rawHTML"></span>
+        <p v-text="message"></p>
+        <p>너는 누구?</p>
+        <p>{{ whoAreYou }}</p>
+        <input type="text" v-model="whoAreYou">
+        <button @click="change">지우기</button>
+        <p>변환된 결과: {{ add }}</p>
+        <div>
+            <p @click="tfchange">숨긴내용 보고 싶은가?</p>
+            <span v-show="tfbtn">사실 너는 멍청이야</span>
+            <p style="color: red;">v-show도 공간을 미리 차지하는건 아니구나</p>
+        </div>
+        <div>
+        <ul>앉은 번호 시작
+            <li v-for="(num, idx) in nums" :key="idx">{{ num }}</li>
+        </ul>
+
+
+        <!-- filter -->
+        <p>홀수 뽑아내기 {{ nums|odd }}</p>
+
+
+        <!-- watch -->
+        <label for="name">개명하기</label>
+        <input type="text" id="name" @keyup.enter="changeName" >
+        <p v-if="inform.bname">이름이 {{ inform.name }}으로 변경되었습니다. </p>
+        
+
+        </div>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                message: '나는 문어',
+                whoAreYou: null,
+                rawHTML: '<h1 style="color:blue;">처음 배운 Vue</h1>',
+                tfbtn: false,
+                nums: [1,2,3,4,5,6],
+                inform : {
+                    name: '이명호',
+                    age: 30,
+                    bname: false,
+                }
+
+            },
+            methods: {
+                change() {
+                    this.whoAreYou = null
+                },
+                tfchange() {
+                    this.tfbtn = !this.tfbtn
+                },
+                changeName() {
+                    this.inform.name = event.target.value
+                    event.target.value = null
+                }
+            },
+            computed: {
+                add () {
+                    const arg = this.whoAreYou
+                    if (arg) {
+                        const msg = `나는 ${arg}입니다.`
+                        return msg
+                    }
+
+                    return '아직 입력데이터가 없습니다.'
+                }
+            },
+            watch: {
+                inform: {
+                    handler: function(val, oldval) {
+                    this.inform.bname= true
+                    },
+                    deep: true,
+                }
+            },
+            filters : {
+                odd(nums) {
+                    return nums.filter(elem => {
+                        return elem%2
+                    })
+                }
+            }
+
+
+        })
+    </script>
+</body>
+</html>
