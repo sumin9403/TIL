@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <select>
+            <option value="all">전체</option>
+            <option value="ing">진행중</option>
+            <option value="fin">완료</option>
+        </select>
+        <input 
+        :keyup.enter="makeTodo"
+        v-model.trim="todo"
+        type="text">
+        <button @click="makeTodo">+</button>
+        <ul>
+            <li v-for="((todo) in todos)" :key="todo.id">
+                <input type="checkbox">
+                <span>{{ todo.title }}</span>
+
+            </li>
+
+        </ul>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const app = new Vue ({
+            el: '#app',
+            data: {
+                todos: [
+     {title: '밥', completed: false, id: new Date().getTime()},
+     {title: '잠', completed: false, id: new Date().getTime()+1},
+    ],
+                todo: null
+            },
+            methods: {
+                makeTodo() {
+                    todos.push(this.todo)
+                }
+
+            }
+
+        }) 
+
+
+    </script>
+</body>
+</html>
